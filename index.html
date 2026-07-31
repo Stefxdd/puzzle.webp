@@ -1,56 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Milana Puzzle ❤️</title>
+<title>HAI MILANA ❤️</title>
 
 <style>
 body {
-    background: #ffe6ee;
-    font-family: Arial, sans-serif;
-    text-align: center;
+    background:#ffe6ee;
+    font-family:Arial;
+    text-align:center;
 }
 
 h1 {
-    color: #ff4d88;
+    color:#ff4d88;
 }
 
 #puzzle {
-    width: 600px;
-    height: 600px;
-    margin: 20px auto;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    gap: 2px;
+    width:90vw;
+    max-width:600px;
+    aspect-ratio:1;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:2px;
 }
 
 .piece {
-    width: 100%;
-    height: 100%;
-    background-image: url("puzzle.webp");
-    background-size: 600px 600px;
-    background-repeat: no-repeat;
-    cursor: grab;
-    border: 1px solid white;
-    box-sizing: border-box;
-}
-
-.piece:active {
-    cursor: grabbing;
+    width:100%;
+    aspect-ratio:1;
+    background-image:url("puzzle.webp");
+    background-size:400% 400%;
+    border:1px solid white;
+    touch-action:none;
 }
 
 #win {
-    display: none;
+    display:none;
 }
 
-button, a {
-    background: #ff4d88;
-    color: white;
-    border: none;
-    padding: 15px 25px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-size: 18px;
+a {
+    display:inline-block;
+    margin-top:20px;
+    background:#ff4d88;
+    color:white;
+    padding:15px 25px;
+    border-radius:20px;
+    text-decoration:none;
 }
 </style>
 
@@ -58,127 +52,138 @@ button, a {
 
 <body>
 
-<h1>HAI MILANA ❤️</h1>
+<h1>EU CRED IN TINE ❤️</h1>
 
 <div id="puzzle"></div>
 
 <div id="win">
-    <h1>Bravoooo! ❤️</h1>
-    <p>Primul pas na bazu)</p>
+<h1>BRAVOOOO! ❤️</h1>
+<p>PRMUL PAS NA BAZU!</p>
 
-    <a href="https://stefxdd.github.io/LoveYouMilana/" target="_blank">
-        Continue ❤️
-    </a>
+<a href="https://stefxdd.github.io/LoveYouMilana/">
+Continue ❤️
+</a>
+
 </div>
 
 
 <script>
 
-const puzzle = document.getElementById("puzzle");
+const puzzle=document.getElementById("puzzle");
 
-let pieces = [];
+let pieces=[];
 
 
-// Create 16 pieces
-for (let i = 0; i < 16; i++) {
+// create pieces
 
-    let piece = document.createElement("div");
-    piece.className = "piece";
+for(let i=0;i<16;i++){
 
-    let column = i % 4;
-    let row = Math.floor(i / 4);
+let piece=document.createElement("div");
 
-    piece.style.backgroundPosition =
-        `-${column * 150}px -${row * 150}px`;
+piece.className="piece";
 
-    piece.dataset.correct = i;
+let x=i%4;
+let y=Math.floor(i/4);
 
-    pieces.push(piece);
+
+// image position
+piece.style.backgroundPosition=
+`${x*33.33}% ${y*33.33}%`;
+
+
+piece.dataset.correct=i;
+
+pieces.push(piece);
+
 }
 
 
-// Shuffle pieces
-pieces.sort(() => Math.random() - 0.5);
+// shuffle
+
+pieces.sort(()=>Math.random()-0.5);
 
 
-// Add pieces
-pieces.forEach(piece => {
-    puzzle.appendChild(piece);
+pieces.forEach(p=>puzzle.appendChild(p));
+
+
+// touch + mouse swapping
+
+let selected=null;
+
+
+document.querySelectorAll(".piece").forEach(piece=>{
+
+
+piece.addEventListener("pointerdown",()=>{
+selected=piece;
+piece.style.opacity="0.5";
 });
 
 
-// Drag and drop
-let selected = null;
+piece.addEventListener("pointerup",()=>{
 
-document.querySelectorAll(".piece").forEach(piece => {
+if(selected && selected!==piece){
 
-    piece.draggable = true;
+let a=selected.style.backgroundPosition;
+selected.style.backgroundPosition=
+piece.style.backgroundPosition;
 
-    piece.addEventListener("dragstart", () => {
-        selected = piece;
-    });
+piece.style.backgroundPosition=a;
 
+check();
 
-    piece.addEventListener("dragover", e => {
-        e.preventDefault();
-    });
+}
 
+selected=null;
 
-    piece.addEventListener("drop", () => {
-
-        if (selected && selected !== piece) {
-
-            let temp = piece.style.backgroundPosition;
-
-            piece.style.backgroundPosition =
-            selected.style.backgroundPosition;
-
-            selected.style.backgroundPosition =
-            temp;
-
-            checkPuzzle();
-        }
-
-    });
+document.querySelectorAll(".piece")
+.forEach(p=>p.style.opacity="1");
 
 });
 
 
-// Check completion
-function checkPuzzle(){
-
-    let solved = true;
-
-    let piecesNow = document.querySelectorAll(".piece");
+});
 
 
-    piecesNow.forEach((piece,index)=>{
 
-        let correctColumn = index % 4;
-        let correctRow = Math.floor(index / 4);
+function check(){
 
-        let correctPosition =
-        `-${correctColumn * 150}px -${correctRow * 150}px`;
+let solved=true;
 
-
-        if(piece.style.backgroundPosition !== correctPosition){
-            solved = false;
-        }
-
-    });
+let all=document.querySelectorAll(".piece");
 
 
-    if(solved){
+all.forEach((p,index)=>{
 
-        puzzle.style.display = "none";
-        document.querySelector("body > h1").style.display = "none";
-        document.getElementById("win").style.display = "block";
+let x=index%4;
+let y=Math.floor(index/4);
 
-    }
+let correct=
+`${x*33.33}% ${y*33.33}%`;
+
+
+if(p.style.backgroundPosition!==correct)
+solved=false;
+
+
+});
+
+
+if(solved){
+
+document.getElementById("puzzle").style.display="none";
+
+document.querySelector("body > h1").style.display="none";
+
+document.getElementById("win").style.display="block";
 
 }
+
+}
+
 
 </script>
+
 
 </body>
 </html>
