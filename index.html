@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Milana Puzzle ❤️</title>
+    <style>
+        body {
+            background: #ffe6ee;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            color: #ff4d88;
+        }
+
+        #puzzle {
+            width: 600px;
+            height: 600px;
+            border: 5px solid white;
+            box-shadow: 0 0 20px pink;
+        }
+
+        #done {
+            display: none;
+            text-align: center;
+        }
+
+        a {
+            background: #ff4d88;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 20px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Complete the puzzle ❤️</h1>
+
+<div id="puzzle">
+    <img src="puzzle.webp" width="600">
+</div>
+
+
+<div id="done">
+    <h1>Bravo Milanochka! ❤️</h1>
+    <p>You completed the puzzle!</p>
+    
+    <a href="https://stefxdd.github.io/LoveYouMilana/" target="_blank">
+        Continue ❤️
+    </a>
+</div>
+
+
+<script>
+    // temporary completion button for testing
+    // later we replace this with real jigsaw completion detection
+
+    document.getElementById("puzzle").onclick = function(){
+        document.getElementById("puzzle").style.display="none";
+        document.querySelector("h1").style.display="none";
+        document.getElementById("done").style.display="block";
+    }
+</script>
+
+</body>
+</html>
