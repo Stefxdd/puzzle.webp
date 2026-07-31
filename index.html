@@ -1,74 +1,158 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Milana Puzzle ❤️</title>
-    <style>
-        body {
-            background: #ffe6ee;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            font-family: Arial, sans-serif;
-        }
+<title>Milana Puzzle ❤️</title>
 
-        h1 {
-            color: #ff4d88;
-        }
+<style>
+body {
+    background:#ffe6ee;
+    font-family:Arial;
+    text-align:center;
+}
 
-        #puzzle {
-            width: 600px;
-            height: 600px;
-            border: 5px solid white;
-            box-shadow: 0 0 20px pink;
-        }
+h1 {
+    color:#ff4d88;
+}
 
-        #done {
-            display: none;
-            text-align: center;
-        }
+#puzzle {
+    width:600px;
+    height:600px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    grid-template-rows:repeat(4,1fr);
+    gap:2px;
+}
 
-        a {
-            background: #ff4d88;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 20px;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 20px;
-        }
-    </style>
+.piece {
+    width:150px;
+    height:150px;
+    background-image:url("puzzle.webp");
+    background-size:600px 600px;
+    cursor:grab;
+    border:1px solid white;
+}
+
+#win {
+    display:none;
+}
+
+a {
+    background:#ff4d88;
+    color:white;
+    padding:15px 25px;
+    border-radius:20px;
+    text-decoration:none;
+}
+</style>
 </head>
 
 <body>
 
-<h1>Complete the puzzle ❤️</h1>
+<h1>Put the puzzle together ❤️</h1>
 
-<div id="puzzle">
-    <img src="puzzle.webp" width="600">
-</div>
+<div id="puzzle"></div>
 
+<div id="win">
+<h1>Bravo Milana! ❤️</h1>
+<p>You finished it!</p>
 
-<div id="done">
-    <h1>Bravo Milanochka! ❤️</h1>
-    <p>You completed the puzzle!</p>
-    
-    <a href="https://stefxdd.github.io/LoveYouMilana/" target="_blank">
-        Continue ❤️
-    </a>
+<a href="https://stefxdd.github.io/LoveYouMilana/">
+Continue ❤️
+</a>
 </div>
 
 
 <script>
-    // temporary completion button for testing
-    // later we replace this with real jigsaw completion detection
 
-    document.getElementById("puzzle").onclick = function(){
-        document.getElementById("puzzle").style.display="none";
-        document.querySelector("h1").style.display="none";
-        document.getElementById("done").style.display="block";
-    }
+let puzzle=document.getElementById("puzzle");
+
+let pieces=[];
+
+for(let i=0;i<16;i++){
+
+    let piece=document.createElement("div");
+    piece.className="piece";
+
+    let x=i%4;
+    let y=Math.floor(i/4);
+
+    piece.style.backgroundPosition=
+    `-${x*150}px -${y*150}px`;
+
+    piece.dataset.correct=i;
+
+    pieces.push(piece);
+}
+
+
+// shuffle
+pieces.sort(()=>Math.random()-0.5);
+
+
+pieces.forEach(piece=>{
+    piece.draggable=true;
+    puzzle.appendChild(piece);
+});
+
+
+let dragged=null;
+
+
+document.querySelectorAll(".piece").forEach(piece=>{
+
+piece.ondragstart=()=>{
+    dragged=piece;
+};
+
+
+piece.ondragover=e=>{
+    e.preventDefault();
+};
+
+
+piece.ondrop=()=>{
+
+    let temp=piece.style.backgroundPosition;
+    piece.style.backgroundPosition=dragged.style.backgroundPosition;
+    dragged.style.backgroundPosition=temp;
+
+    checkWin();
+};
+
+});
+
+
+function checkWin(){
+
+let all=true;
+
+document.querySelectorAll(".piece").forEach((piece,index)=>{
+
+let pos=piece.style.backgroundPosition;
+
+let x=index%4;
+let y=Math.floor(index/4);
+
+let correct=`-${x*150}px -${y*150}px`;
+
+if(pos!==correct){
+    all=false;
+}
+
+});
+
+
+if(all){
+
+puzzle.style.display="none";
+document.querySelector("h1").style.display="none";
+document.getElementById("win").style.display="block";
+
+}
+
+}
+
 </script>
 
 </body>
