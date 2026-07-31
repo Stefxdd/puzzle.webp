@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>HAI MILANA ❤️</title>
+<title>Milana Puzzle ❤️</title>
 
 <style>
 body {
     background:#ffe6ee;
-    font-family:Arial;
+    font-family:Arial, sans-serif;
     text-align:center;
 }
 
@@ -18,7 +18,7 @@ h1 {
     width:90vw;
     max-width:600px;
     aspect-ratio:1;
-    margin:auto;
+    margin:20px auto;
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:2px;
@@ -45,6 +45,7 @@ a {
     padding:15px 25px;
     border-radius:20px;
     text-decoration:none;
+    font-size:18px;
 }
 </style>
 
@@ -52,13 +53,16 @@ a {
 
 <body>
 
-<h1>EU CRED IN TINE ❤️</h1>
+<h1>Complete the puzzle ❤️</h1>
 
 <div id="puzzle"></div>
 
+
 <div id="win">
-<h1>BRAVOOOO! ❤️</h1>
-<p>PRMUL PAS NA BAZU!</p>
+
+<h1>Bravo Milana! ❤️</h1>
+
+<p>You completed the puzzle!</p>
 
 <a href="https://stefxdd.github.io/LoveYouMilana/">
 Continue ❤️
@@ -67,117 +71,160 @@ Continue ❤️
 </div>
 
 
+
 <script>
 
-const puzzle=document.getElementById("puzzle");
+const puzzle = document.getElementById("puzzle");
 
-let pieces=[];
-
-
-// create pieces
-
-for(let i=0;i<16;i++){
-
-let piece=document.createElement("div");
-
-piece.className="piece";
-
-let x=i%4;
-let y=Math.floor(i/4);
+let pieces = [];
 
 
-// image position
-piece.style.backgroundPosition=
-`${x*33.33}% ${y*33.33}%`;
+// Create puzzle pieces
+
+for(let i = 0; i < 16; i++){
+
+    let piece = document.createElement("div");
+
+    piece.className = "piece";
 
 
-piece.dataset.correct=i;
+    let x = i % 4;
+    let y = Math.floor(i / 4);
 
-pieces.push(piece);
+
+    piece.style.backgroundPosition =
+    `${x * 33.33}% ${y * 33.33}%`;
+
+
+    pieces.push(piece);
 
 }
 
 
-// shuffle
+// Shuffle pieces
 
-pieces.sort(()=>Math.random()-0.5);
-
-
-pieces.forEach(p=>puzzle.appendChild(p));
+pieces.sort(() => Math.random() - 0.5);
 
 
-// touch + mouse swapping
+// Add pieces
 
-let selected=null;
+pieces.forEach(piece=>{
+    puzzle.appendChild(piece);
+});
+
+
+// Dragging system
+
+let selected = null;
 
 
 document.querySelectorAll(".piece").forEach(piece=>{
 
 
-piece.addEventListener("pointerdown",()=>{
-selected=piece;
-piece.style.opacity="0.5";
+    piece.addEventListener("pointerdown", e=>{
+
+        selected = piece;
+
+        piece.setPointerCapture(e.pointerId);
+
+        piece.style.opacity="0.5";
+
+    });
+
+
+
+    piece.addEventListener("pointerup", e=>{
+
+
+        if(selected){
+
+
+            let target = document.elementFromPoint(
+                e.clientX,
+                e.clientY
+            );
+
+
+            if(target &&
+               target.classList.contains("piece") &&
+               target !== selected){
+
+
+                let temp =
+                selected.style.backgroundPosition;
+
+
+                selected.style.backgroundPosition =
+                target.style.backgroundPosition;
+
+
+                target.style.backgroundPosition =
+                temp;
+
+            }
+
+
+            selected.style.opacity="1";
+
+            selected=null;
+
+
+            checkPuzzle();
+
+        }
+
+
+    });
+
+
 });
 
 
-piece.addEventListener("pointerup",()=>{
 
-if(selected && selected!==piece){
+// Check if solved
 
-let a=selected.style.backgroundPosition;
-selected.style.backgroundPosition=
-piece.style.backgroundPosition;
-
-piece.style.backgroundPosition=a;
-
-check();
-
-}
-
-selected=null;
-
-document.querySelectorAll(".piece")
-.forEach(p=>p.style.opacity="1");
-
-});
+function checkPuzzle(){
 
 
-});
+    let solved=true;
+
+
+    document.querySelectorAll(".piece")
+    .forEach((piece,index)=>{
+
+
+        let x=index%4;
+
+        let y=Math.floor(index/4);
+
+
+        let correct =
+        `${x * 33.33}% ${y * 33.33}%`;
+
+
+        if(piece.style.backgroundPosition !== correct){
+
+            solved=false;
+
+        }
+
+
+    });
 
 
 
-function check(){
-
-let solved=true;
-
-let all=document.querySelectorAll(".piece");
+    if(solved){
 
 
-all.forEach((p,index)=>{
+        puzzle.style.display="none";
 
-let x=index%4;
-let y=Math.floor(index/4);
+        document.querySelector("body > h1").style.display="none";
 
-let correct=
-`${x*33.33}% ${y*33.33}%`;
+        document.getElementById("win").style.display="block";
 
 
-if(p.style.backgroundPosition!==correct)
-solved=false;
+    }
 
-
-});
-
-
-if(solved){
-
-document.getElementById("puzzle").style.display="none";
-
-document.querySelector("body > h1").style.display="none";
-
-document.getElementById("win").style.display="block";
-
-}
 
 }
 
