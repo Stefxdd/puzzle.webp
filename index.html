@@ -4,6 +4,7 @@
 <title>Milana Puzzle ❤️</title>
 
 <style>
+
 body {
     background:#ffe6ee;
     font-family:Arial, sans-serif;
@@ -15,90 +16,131 @@ h1 {
 }
 
 #puzzle {
+
     width:90vw;
     max-width:600px;
     aspect-ratio:1;
     margin:20px auto;
+
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:2px;
 }
 
+
 .piece {
+
     width:100%;
     aspect-ratio:1;
+
     background-image:url("puzzle.webp");
     background-size:400% 400%;
+    background-repeat:no-repeat;
+
     border:1px solid white;
+
     touch-action:none;
 }
 
+
 #win {
+
     display:none;
+
 }
 
+
 a {
+
     display:inline-block;
+
     margin-top:20px;
+
     background:#ff4d88;
+
     color:white;
+
     padding:15px 25px;
+
     border-radius:20px;
+
     text-decoration:none;
+
     font-size:18px;
+
 }
+
 </style>
 
 </head>
 
+
 <body>
 
-<h1>Complete the puzzle ❤️</h1>
+
+<h1>HAI MILANA ❤️</h1>
+
 
 <div id="puzzle"></div>
 
 
+
 <div id="win">
 
-<h1>Bravo Milana! ❤️</h1>
+<h1>URAAAA! ❤️</h1>
 
-<p>You completed the puzzle!</p>
+<p>PRIMUL PAS NA BAZU)!</p>
+
 
 <a href="https://stefxdd.github.io/LoveYouMilana/">
-Continue ❤️
+frumos linkul ;)
 </a>
+
 
 </div>
 
 
 
+
 <script>
+
 
 const puzzle = document.getElementById("puzzle");
 
 let pieces = [];
 
 
-// Create puzzle pieces
+
+// Create 16 puzzle pieces
 
 for(let i = 0; i < 16; i++){
 
+
     let piece = document.createElement("div");
 
-    piece.className = "piece";
+    piece.className="piece";
 
 
     let x = i % 4;
+
     let y = Math.floor(i / 4);
+
 
 
     piece.style.backgroundPosition =
     `${x * 33.33}% ${y * 33.33}%`;
 
 
+
+    piece.dataset.correct=i;
+
+
     pieces.push(piece);
 
+
 }
+
+
 
 
 // Shuffle pieces
@@ -106,16 +148,24 @@ for(let i = 0; i < 16; i++){
 pieces.sort(() => Math.random() - 0.5);
 
 
+
 // Add pieces
 
 pieces.forEach(piece=>{
+
     puzzle.appendChild(piece);
+
 });
 
 
-// Dragging system
 
-let selected = null;
+
+
+// Drag / touch system
+
+
+let selected=null;
+
 
 
 document.querySelectorAll(".piece").forEach(piece=>{
@@ -123,13 +173,18 @@ document.querySelectorAll(".piece").forEach(piece=>{
 
     piece.addEventListener("pointerdown", e=>{
 
-        selected = piece;
+
+        selected=piece;
+
 
         piece.setPointerCapture(e.pointerId);
 
+
         piece.style.opacity="0.5";
 
+
     });
+
 
 
 
@@ -139,37 +194,46 @@ document.querySelectorAll(".piece").forEach(piece=>{
         if(selected){
 
 
-            let target = document.elementFromPoint(
+            let target=document.elementFromPoint(
                 e.clientX,
                 e.clientY
             );
 
 
-            if(target &&
-               target.classList.contains("piece") &&
-               target !== selected){
+
+            if(
+                target &&
+                target.classList.contains("piece") &&
+                target !== selected
+            ){
 
 
                 let temp =
                 selected.style.backgroundPosition;
 
 
+
                 selected.style.backgroundPosition =
                 target.style.backgroundPosition;
+
 
 
                 target.style.backgroundPosition =
                 temp;
 
+
             }
 
 
+
             selected.style.opacity="1";
+
 
             selected=null;
 
 
             checkPuzzle();
+
 
         }
 
@@ -181,12 +245,14 @@ document.querySelectorAll(".piece").forEach(piece=>{
 
 
 
-// Check if solved
+
+
 
 function checkPuzzle(){
 
 
     let solved=true;
+
 
 
     document.querySelectorAll(".piece")
@@ -198,8 +264,10 @@ function checkPuzzle(){
         let y=Math.floor(index/4);
 
 
+
         let correct =
         `${x * 33.33}% ${y * 33.33}%`;
+
 
 
         if(piece.style.backgroundPosition !== correct){
@@ -213,12 +281,16 @@ function checkPuzzle(){
 
 
 
+
+
     if(solved){
 
 
-        puzzle.style.display="none";
+        document.getElementById("puzzle").style.display="none";
+
 
         document.querySelector("body > h1").style.display="none";
+
 
         document.getElementById("win").style.display="block";
 
@@ -227,6 +299,7 @@ function checkPuzzle(){
 
 
 }
+
 
 
 </script>
